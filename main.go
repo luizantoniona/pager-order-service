@@ -5,11 +5,13 @@ import (
 	"net/http"
 
 	"pager-order-service/database"
+	"pager-order-service/route"
 )
 
 func main() {
-
 	database.InitializeDatabase()
+
+	route.SetupRoutes()
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("API is running!"))
