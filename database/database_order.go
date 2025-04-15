@@ -6,7 +6,7 @@ import (
 )
 
 func createOrderTable() {
-	query, err := os.ReadFile("./database/sql/create_table_order.sql")
+	query, err := os.ReadFile("./database/sql/schema/create_table_order.sql")
 	if err != nil {
 		log.Fatalf("Error reading SQL file: %v", err)
 	}
@@ -18,7 +18,7 @@ func createOrderTable() {
 }
 
 func createOrderCustomerTable() {
-	query, err := os.ReadFile("./database/sql/create_table_order_customer.sql")
+	query, err := os.ReadFile("./database/sql/schema/create_table_order_customer.sql")
 	if err != nil {
 		log.Fatalf("Error reading SQL file: %v", err)
 	}
@@ -30,7 +30,7 @@ func createOrderCustomerTable() {
 }
 
 func createOrderAddressTable() {
-	query, err := os.ReadFile("./database/sql/create_table_order_address.sql")
+	query, err := os.ReadFile("./database/sql/schema/create_table_order_address.sql")
 	if err != nil {
 		log.Fatalf("Error reading SQL file: %v", err)
 	}
@@ -42,7 +42,7 @@ func createOrderAddressTable() {
 }
 
 func createOrderItemTable() {
-	query, err := os.ReadFile("./database/sql/create_table_order_item.sql")
+	query, err := os.ReadFile("./database/sql/schema/create_table_order_item.sql")
 	if err != nil {
 		log.Fatalf("Error reading SQL file: %v", err)
 	}
