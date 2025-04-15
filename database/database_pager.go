@@ -2,48 +2,40 @@ package database
 
 import (
 	"log"
+	"os"
 )
 
 func createPagerTable() {
-	query := `
-	CREATE TABLE IF NOT EXISTS pager (
-		id TEXT PRIMARY KEY,
-		created_at TIMESTAMP,
-		updated_at TIMESTAMP
-	);`
-	_, err := DB.Exec(query)
+	query, err := os.ReadFile("./database/sql/schema/create_table_pager.sql")
+	if err != nil {
+		log.Fatalf("Error reading SQL file: %v", err)
+	}
+
+	_, err = DB.Exec(string(query))
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 func createPagerCustomerTable() {
-	query := `
-	CREATE TABLE IF NOT EXISTS pager_customer (
-		order_id TEXT,
-		name TEXT,
-		email TEXT,
-		phone TEXT,
-		FOREIGN KEY (order_id) REFERENCES order(id)
-	);`
-	_, err := DB.Exec(query)
+	query, err := os.ReadFile("./database/sql/schema/create_table_pager_customer.sql")
+	if err != nil {
+		log.Fatalf("Error reading SQL file: %v", err)
+	}
+
+	_, err = DB.Exec(string(query))
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 func createPagerItemTable() {
-	query := `
-	CREATE TABLE IF NOT EXISTS pager_item (
-		order_id TEXT,
-		code TEXT,
-		name TEXT,
-		description TEXT,
-		price REAL,
-		quantity INTEGER,
-		FOREIGN KEY (order_id) REFERENCES order(id)
-	);`
-	_, err := DB.Exec(query)
+	query, err := os.ReadFile("./database/sql/schema/create_table_pager_item.sql")
+	if err != nil {
+		log.Fatalf("Error reading SQL file: %v", err)
+	}
+
+	_, err = DB.Exec(string(query))
 	if err != nil {
 		log.Fatal(err)
 	}
