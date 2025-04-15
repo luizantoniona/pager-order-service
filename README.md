@@ -5,7 +5,7 @@ This is a project for learning golang
 ## Stack:
 
 - Go
-- SQLite
+- SQL
 
 <p align="center">
   <img alt="GitHub count language" src="https://img.shields.io/github/languages/count/luizantoniona/pager-order-service" />
