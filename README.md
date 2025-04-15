@@ -5,19 +5,7 @@ This is a project for learning golang
 ## Stack:
 
 - Go
-- 
-
-## Usefull commands - ignore
-
-go version
-
-go mod init pager-order-service
-
-gofmt -w file.go
-
-go run main.go
-
----
+- SQLite
 
 <p align="center">
   <img alt="GitHub count language" src="https://img.shields.io/github/languages/count/luizantoniona/pager-order-service" />
