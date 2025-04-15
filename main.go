@@ -1,15 +1,23 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
+
+	"pager-order-service/database"
 )
 
 func main() {
+
+	database.InitializeDatabase()
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Pager Order Service is running!")
+		w.Write([]byte("API is running!"))
 	})
 
-	fmt.Println("Server listening on http://localhost:8080")
-	http.ListenAndServe(":8080", nil)
+	log.Println("Server running at http://localhost:8080")
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
