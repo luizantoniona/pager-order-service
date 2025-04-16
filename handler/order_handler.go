@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"pager-order-service/model"
 	"pager-order-service/service"
@@ -20,8 +21,20 @@ func HandleOrders(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetOrderHandler(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Path[len("/orders/"):]
-	if r.URL.Path != "/orders" && id != "" {
+	if r.URL.Path == "/orders" {
+		orderIDs, err := service.GetAllOrderIDs()
+		if err != nil {
+			http.Error(w, "Failed to retrieve orders", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(orderIDs)
+		return
+	}
+
+	if strings.HasPrefix(r.URL.Path, "/orders/") {
+		id := strings.TrimPrefix(r.URL.Path, "/orders/")
 		order, err := service.GetOrderByID(id)
 		if err != nil {
 			http.Error(w, "Order not found", http.StatusNotFound)
@@ -33,14 +46,7 @@ func GetOrderHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	orderIDs, err := service.GetAllOrderIDs()
-	if err != nil {
-		http.Error(w, "Failed to retrieve orders", http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(orderIDs)
+	http.NotFound(w, r)
 }
 
 func CreateOrderHandler(w http.ResponseWriter, r *http.Request) {
