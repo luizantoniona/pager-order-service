@@ -10,11 +10,37 @@ import (
 
 func HandleOrders(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
+	case http.MethodGet:
+		GetOrderHandler(w, r)
 	case http.MethodPost:
 		CreateOrderHandler(w, r)
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
+}
+
+func GetOrderHandler(w http.ResponseWriter, r *http.Request) {
+	id := r.URL.Path[len("/orders/"):]
+	if r.URL.Path != "/orders" && id != "" {
+		order, err := service.GetOrderByID(id)
+		if err != nil {
+			http.Error(w, "Order not found", http.StatusNotFound)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(order)
+		return
+	}
+
+	orderIDs, err := service.GetAllOrderIDs()
+	if err != nil {
+		http.Error(w, "Failed to retrieve orders", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(orderIDs)
 }
 
 func CreateOrderHandler(w http.ResponseWriter, r *http.Request) {

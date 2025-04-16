@@ -5,6 +5,14 @@ import (
 	"pager-order-service/repository"
 )
 
+func GetOrderByID(id string) (model.Order, error) {
+	return repository.GetOrderByID(id)
+}
+
+func GetAllOrderIDs() ([]string, error) {
+	return repository.GetAllOrderIDs()
+}
+
 func InsertOrder(order model.Order) error {
 	// TODO: Criar verificações
 
