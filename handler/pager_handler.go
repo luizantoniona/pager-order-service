@@ -3,7 +3,6 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
-	"strings"
 
 	"pager-order-service/model"
 	"pager-order-service/service"
@@ -21,7 +20,9 @@ func HandlePagers(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetPagerHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "/pagers" {
+	pagerID := r.URL.Query().Get("id")
+
+	if pagerID == "" {
 		pagerIDs, err := service.GetAllPagerIDs()
 		if err != nil {
 			http.Error(w, "Failed to retrieve pagers", http.StatusInternalServerError)
@@ -30,23 +31,18 @@ func GetPagerHandler(w http.ResponseWriter, r *http.Request) {
 
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(pagerIDs)
+
 		return
 	}
 
-	if strings.HasPrefix(r.URL.Path, "/pagers/") {
-		id := strings.TrimPrefix(r.URL.Path, "/pagers/")
-		pager, err := service.GetPagerByID(id)
-		if err != nil {
-			http.Error(w, "Pager not found", http.StatusNotFound)
-			return
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(pager)
+	pager, err := service.GetPagerByID(pagerID)
+	if err != nil {
+		http.Error(w, "Pager not found", http.StatusNotFound)
 		return
 	}
 
-	http.NotFound(w, r)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(pager)
 }
 
 func CreatePagerHandler(w http.ResponseWriter, r *http.Request) {

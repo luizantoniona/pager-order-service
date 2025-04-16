@@ -15,6 +15,7 @@ func GetPagerByID(id string) (model.Pager, error) {
 	}
 
 	query, _ = database.ReadSQLFile("./repository/sql/pager_customer/select_pager_customer_by_id.sql")
+	pager.Customer = &model.Customer{}
 	err = database.DB.QueryRow(query, id).Scan(
 		&pager.Customer.Name,
 		&pager.Customer.Email,
@@ -24,7 +25,7 @@ func GetPagerByID(id string) (model.Pager, error) {
 		return pager, err
 	}
 
-	query, _ = database.ReadSQLFile("./repository/sql/pager_item/select_pager_items_by_id.sql")
+	query, _ = database.ReadSQLFile("./repository/sql/pager_item/select_pager_item_by_id.sql")
 	rows, err := database.DB.Query(query, id)
 	if err != nil {
 		return pager, err
