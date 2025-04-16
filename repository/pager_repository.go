@@ -11,22 +11,14 @@ func InsertPager(pager model.Pager) error {
 		return err
 	}
 
-	query, err := database.ReadSQLFile("./repository/sql/pager/insert_pager.sql")
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
+	query, _ := database.ReadSQLFile("./repository/sql/pager/insert_pager.sql")
 	_, err = tx.Exec(query, pager.ID, pager.PagerNumber, pager.CreatedAt, pager.UpdatedAt)
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
 
-	query, err = database.ReadSQLFile("./repository/sql/pager_customer/insert_pager_customer.sql")
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
+	query, _ = database.ReadSQLFile("./repository/sql/pager_customer/insert_pager_customer.sql")
 	_, err = tx.Exec(query, pager.ID, pager.Customer.Name, pager.Customer.Email, pager.Customer.Phone)
 	if err != nil {
 		tx.Rollback()
@@ -34,11 +26,7 @@ func InsertPager(pager model.Pager) error {
 	}
 
 	for _, item := range pager.Items {
-		query, err = database.ReadSQLFile("./repository/sql/pager_item/insert_pager_item.sql")
-		if err != nil {
-			tx.Rollback()
-			return err
-		}
+		query, _ = database.ReadSQLFile("./repository/sql/pager_item/insert_pager_item.sql")
 		_, err = tx.Exec(query, pager.ID, item.Code, item.Name, item.Description, item.Price, item.Quantity)
 		if err != nil {
 			tx.Rollback()
